@@ -7,7 +7,7 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class Game {
-    private Board board;
-    private Player winner;
-    private GameState gameState = GameState.GAME_NOT_STARTED;
+    private final Board board;
+    private final Player winner;
+    private final GameState gameState;
 }

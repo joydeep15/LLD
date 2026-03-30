@@ -11,25 +11,18 @@ import java.util.List;
 import java.util.Set;
 
 @RequiredArgsConstructor
+@Getter
 public class Player {
-    @Getter final String name;
-    @Getter private final List<Ship> ships;
-
-    @Getter
-    Set<Cell> availableCells = new HashSet<>();
-
-    @Getter
-    Set<Cell> discardedCells = new HashSet<>();
-
-    @Setter
-    private FiringStrategy firingStrategy;
-    List<Ship> shipsHitInRound = new ArrayList<>();
+    private final String name;
+    private final List<Ship> ships;
+    private final Set<Cell> availableCells = new HashSet<>();
+    private final Set<Cell> discardedCells = new HashSet<>();
+    @Setter private FiringStrategy firingStrategy;
+    private final List<Ship> shipsHitInRound = new ArrayList<>();
 
     public void addShip(Ship ship) {
-        for (Cell cell : ship.getOccupiedCells()){
-            if (!availableCells.contains(cell)){
-                throw new RuntimeException("cannot accomodate ship");
-            }
+        if (!availableCells.containsAll(ship.getOccupiedCells())) {
+            throw new RuntimeException("cannot accomodate ship");
         }
         ships.add(ship);
     }
@@ -39,25 +32,17 @@ public class Player {
     }
 
     public int remainingShips() {
-        int available = 0;
-        for (Ship ship : ships) {
-            if(!ship.isDestroyed()){
-                available++;
-            }
-        }
-        return available;
+        return (int) ships.stream().filter(ship -> !ship.isDestroyed()).count();
     }
 
     public Cell fire(Player opponent) {
-        Cell fired = firingStrategy.fire(opponent);
-        return fired;
+        return firingStrategy.fire(opponent);
     }
 
     public void registerFire(Cell cell) {
         this.shipsHitInRound.clear();
         for (Ship ship : ships) {
             if(ship.isHit(cell)) {
-                System.out.println("aiyo!");
                 availableCells.removeAll(ship.getOccupiedCells());
                 discardedCells.addAll(ship.getOccupiedCells());
                 shipsHitInRound.add(ship);
@@ -68,11 +53,8 @@ public class Player {
     }
 
     public List<Ship> fetchDestroyedShips() {
-        List<Ship> toReturn = new ArrayList<>(this.shipsHitInRound);
-        this.shipsHitInRound.clear();
-        return toReturn;
+        List<Ship> destroyedShips = new ArrayList<>(shipsHitInRound);
+        shipsHitInRound.clear();
+        return destroyedShips;
     }
-
-
-
 }

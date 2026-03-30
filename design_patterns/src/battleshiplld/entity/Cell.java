@@ -7,7 +7,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @EqualsAndHashCode
 public class Cell {
-    @Getter final int x;
+    @Getter private final int x;
     @Getter private final int y;
-
 }

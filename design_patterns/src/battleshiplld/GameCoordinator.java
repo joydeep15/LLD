@@ -7,8 +7,7 @@ public class GameCoordinator {
         GameService gameService = new GameService();
         gameService.initGame(6);
         gameService.viewBattleField();
-        System.out.println();
-        System.out.println();
+        System.out.println("\n");
         gameService.addShip("sh1", 2, 1, 5, 4, 4);
         gameService.viewBattleField();
         gameService.startGame();

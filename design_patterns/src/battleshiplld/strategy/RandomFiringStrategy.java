@@ -5,15 +5,12 @@ import battleshiplld.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
-import java.util.Set;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class RandomFiringStrategy implements FiringStrategy {
-
     @Override
     public Cell fire(Player player) {
         List<Cell> availableCells = new ArrayList<>(player.getAvailableCells());
-        Random random = new Random();
-        return availableCells.get(random.nextInt(availableCells.size()));
+        return availableCells.get(ThreadLocalRandom.current().nextInt(availableCells.size()));
     }
 }

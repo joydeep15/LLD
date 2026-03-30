@@ -2,62 +2,53 @@ package battleshiplld.entity;
 
 import lombok.Builder;
 import lombok.Getter;
+
 import java.util.List;
 import java.util.Set;
 
-
 @Builder
+@Getter
 public class Board {
-    @Getter private final List <Player> players;
-    @Getter private final int size;
+    private final List<Player> players;
+    private final int size;
 
     public void addPlayer(Player player) {
         players.add(player);
     }
 
     public void assignCells(Player player, boolean left) {
-        //assign left half of all the cells
-        // x -> 0 -> n/2-1, n/2 -> n-1
-        //y -> 0 -> n-1
         int xStart = left ? 0 : size/2;
-        int xEnd = left ? size/2 -1 : size-1;
-        for (int i = xStart; i <= xEnd; i++) {
+        int xEnd = left ? size/2 : size;
+        for (int i = xStart; i < xEnd; i++) {
             for (int j = 0; j < size; j++) {
-                Cell cell = new Cell(j, i);
-                player.addCell(cell);
+                player.addCell(new Cell(j, i));
             }
         }
     }
 
-
     public void viewBoard() {
         String[][] cells = new String[size][size];
-        for(Player player : players) {
-            Set<Cell> scell = player.getAvailableCells();
-            for (Cell cell : scell) {
-                cells[cell.getX()][cell.getY()] = player.getName();
-            }
-            scell = player.getDiscardedCells();
-            for (Cell cell : scell) {
-                cells[cell.getX()][cell.getY()] = player.getName() + "-L";
-            }
-            for(Ship s : player.getShips()){
-                for (Cell cell : s.getOccupiedCells()) {
-                    cells[cell.getX()][cell.getY()] = player.getName() + "-" +  s.getName();
-                    if(s.isDestroyed()){
-                        cells[cell.getX()][cell.getY()] = "X";
-                    }
+        for (Player player : players) {
+            markCells(cells, player.getAvailableCells(), player.getName());
+            markCells(cells, player.getDiscardedCells(), player.getName() + "-L");
+            for (Ship ship : player.getShips()) {
+                String value = ship.isDestroyed() ? "X" : player.getName() + "-" + ship.getName();
+                for (Cell cell : ship.getOccupiedCells()) {
+                    cells[cell.getX()][cell.getY()] = value;
                 }
             }
         }
-        for (int i = size-1; i >= 0; i--) {
+        for (int i = size - 1; i >= 0; i--) {
             for (int j = 0; j < size; j++) {
                 System.out.print(cells[i][j] + "\t");
             }
             System.out.println();
         }
+    }
 
-
-
+    private void markCells(String[][] cells, Set<Cell> playerCells, String value) {
+        for (Cell cell : playerCells) {
+            cells[cell.getX()][cell.getY()] = value;
+        }
     }
 }
