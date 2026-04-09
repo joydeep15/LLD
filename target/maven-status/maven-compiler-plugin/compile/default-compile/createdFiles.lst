@@ -67,6 +67,7 @@ creational/User.class
 creational/EconomicCarFactory.class
 structural/Lights.class
 concurrency/simplethreads/Test.class
+parkinglot/entity/Spot.class
 structural/Boat.class
 concurrency/simplethreads/Producer.class
 structural/Vehicle.class
@@ -84,6 +85,7 @@ behavioural/TVObserver.class
 lld/uber/Main.class
 creational/Proto.class
 behavioural/SortingStrategy.class
+parkinglot/SpotFetcher.class
 creational/AbstractFactoryProducer.class
 concurrency/simplethreads/PrinterThreadClass.class
 concurrency/simplethreads/CyclicBarrierImpl.class
@@ -94,4 +96,3 @@ concurrency/simplethreads/SimpleThread.class
 creational/Square.class
 concurrency/simplethreads/ReadWriteLock$1.class
 structural/Facade.class
-parkinglot/SingleTon.class
